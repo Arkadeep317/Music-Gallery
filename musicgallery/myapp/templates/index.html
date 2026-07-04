@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vynil List</title>
+    <!-- Link to your static CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Massive Background Text -->
+    <div class="bg-text">VYNIL LIST</div>
+    
+    <!-- Central Glass Container -->
+    <div class="glass-container">
+        
+        <!-- Search Bar -->
+        <form class="search-form" action="#" method="GET">
+            <input type="text" name="q" class="glass-input" placeholder="Search for tracks, artists, or playlists...">
+            <button type="submit" class="glass-btn search-btn">Search</button>
+        </form>
+        
+        <!-- Explore Option -->
+        <a href="#" class="glass-btn explore-btn">Explore</a>
+        
+    </div>
+</body>
+</html>

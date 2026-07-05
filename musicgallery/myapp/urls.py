@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     # The empty string '' means this is the root of the gallery app
-    path('home/', views.home),
+    path('index/', views.index),
 ]

@@ -1,0 +1,37 @@
+{% extends 'gallery/base.html' %}
+{% block title %}Add a Song — Vinylite{% endblock %}
+{% block content %}
+<div class="form-page">
+  <a href="{% url 'gallery:home' %}" class="back-link">&larr; Back to your crate</a>
+  <div class="form-card">
+    <span class="eyebrow">Grow the gallery</span>
+    <h1>Add a Song</h1>
+    <p class="poster-sub" style="margin-bottom:26px;">Drop in a track and its streaming link.</p>
+
+    {% if messages %}
+      <ul class="messages">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="field">
+        <label for="id_name">Song Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+      <div class="field">
+        <label for="id_artist">Artist Name</label>
+        {{ form.artist }}
+        {{ form.artist.errors }}
+      </div>
+      <div class="field">
+        <label for="id_link">Streaming Link</label>
+        {{ form.link }}
+        <p class="helptext">Any streaming link — YouTube, Spotify, SoundCloud, etc.</p>
+        {{ form.link.errors }}
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Add Song</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

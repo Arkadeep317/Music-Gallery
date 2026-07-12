@@ -1,0 +1,23 @@
+{% extends 'gallery/base.html' %}
+{% block title %}All Playlists — Vinylite{% endblock %}
+{% block content %}
+<div class="container app-shell" style="padding-top:40px;">
+  <a href="{% url 'gallery:home' %}" class="back-link">&larr; Back to your crate</a>
+  <div class="section-title"><h2>All Playlists</h2></div>
+
+  {% if playlists %}
+    <div class="playlist-grid">
+      {% for playlist in playlists %}
+        <div class="sleeve">
+          <div class="sleeve-disc">{% include 'gallery/_vinyl.html' %}</div>
+          <h3>{{ playlist.name }}</h3>
+          <span class="count">{{ playlist.songs.count }} song{{ playlist.songs.count|pluralize }}</span>
+          <a class="stretched" href="{% url 'gallery:playlist_detail' playlist.id %}"></a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-note">No playlists yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'gallery/base.html' %}
+{% block title %}Edit {{ playlist.name }} — Vinylite{% endblock %}
+{% block content %}
+<div class="form-page">
+  <a href="{% url 'gallery:playlist_detail' playlist.id %}" class="back-link">&larr; Back to {{ playlist.name }}</a>
+  <div class="form-card">
+    <span class="eyebrow">Editing</span>
+    <h1>{{ playlist.name }}</h1>
+    <p class="poster-sub" style="margin-bottom:26px;">Add more songs to this playlist.</p>
+
+    {% if messages %}
+      <ul class="messages">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="field">
+        <label for="song_names">Songs to Add</label>
+        <textarea name="song_names" id="song_names" rows="4" placeholder="Enter one song name per line"></textarea>
+        <p class="helptext">One song name per line. Songs not yet in the gallery will be skipped.</p>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Add to Playlist</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

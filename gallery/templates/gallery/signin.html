@@ -1,0 +1,34 @@
+{% extends 'gallery/base.html' %}
+{% block title %}Sign In — Vinylite{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <span class="eyebrow">Welcome back</span>
+    <h1>Sign In</h1>
+    <p class="poster-sub" style="margin-bottom:26px;">Spin back into your crate.</p>
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="field">
+        <label for="id_email">Gmail</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+      </div>
+      <div class="field">
+        <label for="id_password">Password</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Submit</button>
+    </form>
+
+    <p class="auth-foot">New to Vinylite? <a href="{% url 'gallery:signup' %}">Sign up</a></p>
+  </div>
+</div>
+{% endblock %}

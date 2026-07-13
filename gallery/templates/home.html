@@ -1,4 +1,4 @@
-{% extends 'gallery/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Your Crate — Vinylite{% endblock %}
 {% block content %}
 <div class="container app-shell">
@@ -32,7 +32,7 @@
     <div class="recent-strip">
       {% for activity in recent %}
         <a class="recent-chip" href="{% url 'gallery:play_song' activity.song.id %}">
-          <span class="disc-mini">{% include 'gallery/_vinyl.html' %}</span>
+          <span class="disc-mini">{% include '_vinyl.html' %}</span>
           <span>
             <span class="title">{{ activity.song.name }}</span>
             <span class="artist">{{ activity.song.artist }}</span>

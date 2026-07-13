@@ -15,13 +15,13 @@ def test(request):
 def welcome(request):
     """Landing page with Sign up / Sign in options."""
     if request.user.is_authenticated:
-        return redirect('gallery:home')
-    return render(request, 'gallery/welcome.html')
+        return redirect('home')
+    return render(request,'welcome.html')
 
 
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('gallery:home')
+        return redirect('home')
 
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -36,17 +36,16 @@ def signup(request):
             )
             user.save()
             messages.success(request, "Account created! You can now sign in.")
-            return redirect('gallery:welcome')
+            return redirect('welcome')
     else:
         form = SignUpForm()
 
-    return render(request, 'gallery/signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 def signin(request):
     if request.user.is_authenticated:
-        return redirect('gallery:home')
-
+        return redirect('home')
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
@@ -55,38 +54,39 @@ def signin(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('gallery:home')
+                return redirect('home')
             messages.error(request, "That gmail and password don't match any account.")
     else:
         form = SignInForm()
-
-    return render(request, 'gallery/signin.html', {'form': form})
-
+    return render(request,'signin.html', {'form':form})
 
 def logout_view(request):
     logout(request)
-    # Sent back to the welcome page, since the home page requires a signed-in user.
-    return redirect('gallery:welcome')
+
+    return redirect('welcome')
 
 
-@login_required
+# @login_required   # TEMP: disabled for testing without auth — put this back before shipping
 def home(request):
-    playlists = Playlist.objects.filter(owner=request.user)
-    recent = RecentActivity.objects.filter(user=request.user).select_related('song')[:6]
-    return render(request, 'gallery/home.html', {
+    if request.user.is_authenticated:
+        playlists = Playlist.objects.filter(owner=request.user)
+        recent = RecentActivity.objects.filter(user=request.user).select_related('song')[:6]
+    else:
+        playlists = Playlist.objects.none()
+        recent = []
+    return render(request, 'home.html', {
         'playlists': playlists[:4],
         'has_more_playlists': playlists.count() > 4,
         'recent': recent,
     })
 
-
-@login_required
+# @login_required
 def all_playlists(request):
     playlists = Playlist.objects.filter(owner=request.user)
-    return render(request, 'gallery/all_playlists.html', {'playlists': playlists})
+    return render(request, 'all_playlists.html', {'playlists': playlists})
 
 
-@login_required
+# @login_required
 def search_songs(request):
     query = request.GET.get('q', '').strip()
     results = []
@@ -94,17 +94,17 @@ def search_songs(request):
         results = Song.objects.filter(
             Q(name__icontains=query) | Q(artist__icontains=query)
         )
-    return render(request, 'gallery/search.html', {'query': query, 'results': results})
+    return render(request, 'search.html', {'query': query, 'results': results})
 
 
-@login_required
+# @login_required
 def play_song(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     RecentActivity.objects.update_or_create(user=request.user, song=song)
-    return render(request, 'gallery/play_song.html', {'song': song})
+    return render(request, 'play_song.html', {'song': song})
 
 
-@login_required
+# @login_required
 def add_song(request):
     if request.method == 'POST':
         form = SongForm(request.POST)
@@ -113,13 +113,13 @@ def add_song(request):
             song.added_by = request.user
             song.save()
             messages.success(request, f'"{song.name}" was added to the gallery.')
-            return redirect('gallery:home')
+            return redirect('home')
     else:
         form = SongForm()
-    return render(request, 'gallery/add_song.html', {'form': form})
+    return render(request, 'add_song.html', {'form': form})
 
 
-@login_required
+# @login_required
 def create_playlist(request):
     skipped = []
     if request.method == 'POST':
@@ -145,19 +145,19 @@ def create_playlist(request):
                     "Not loaded (not found in the gallery): " + ", ".join(skipped)
                 )
             messages.success(request, f'Playlist "{playlist.name}" created.')
-            return redirect('gallery:home')
+            return redirect('home')
     else:
         form = PlaylistForm()
-    return render(request, 'gallery/create_playlist.html', {'form': form, 'skipped': skipped})
+    return render(request, 'create_playlist.html', {'form': form, 'skipped': skipped})
 
 
-@login_required
+# @login_required
 def playlist_detail(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
-    return render(request, 'gallery/playlist_detail.html', {'playlist': playlist})
+    return render(request, 'playlist_detail.html', {'playlist': playlist})
 
 
-@login_required
+# @login_required
 def edit_playlist(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
     skipped = []
@@ -179,6 +179,6 @@ def edit_playlist(request, playlist_id):
                 "Not loaded (not found in the gallery): " + ", ".join(skipped)
             )
         messages.success(request, "Playlist updated.")
-        return redirect('gallery:playlist_detail', playlist_id=playlist.id)
+        return redirect('playlist_detail', playlist_id=playlist.id)
 
-    return render(request, 'gallery/edit_playlist.html', {'playlist': playlist})
+    return render(request, 'edit_playlist.html', {'playlist': playlist})

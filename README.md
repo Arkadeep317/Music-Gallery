@@ -17,8 +17,8 @@ Then open http://127.0.0.1:8000/ in your browser.
 
 - `musicgallery/` — Django project settings and root urls.py
 - `gallery/` — the app: models.py, views.py, forms.py, urls.py
-  - `gallery/static/gallery/css/style.css` — all styling
-  - `gallery/templates/gallery/` — all HTML pages
+  - `gallery/static/style.css` — all styling
+  - `gallery/templates` — all HTML pages
 - No JS frameworks, no separate frontend — just Django, HTML, and CSS.
 
 ## Notes on a couple of design decisions

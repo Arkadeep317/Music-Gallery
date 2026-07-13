@@ -45,7 +45,7 @@ def signup(request):
 
 def signin(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('gallery:home')
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
@@ -54,7 +54,7 @@ def signin(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('gallery:home')
             messages.error(request, "That gmail and password don't match any account.")
     else:
         form = SignInForm()
@@ -62,8 +62,7 @@ def signin(request):
 
 def logout_view(request):
     logout(request)
-
-    return redirect('welcome')
+    return redirect('gallery:welcome')
 
 
 # @login_required   # TEMP: disabled for testing without auth — put this back before shipping
@@ -101,7 +100,7 @@ def search_songs(request):
 def play_song(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     RecentActivity.objects.update_or_create(user=request.user, song=song)
-    return render(request, 'play_song.html', {'song': song})
+    return render(request,'play_song.html', {'song': song})
 
 
 # @login_required

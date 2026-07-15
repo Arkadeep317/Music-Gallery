@@ -1,5 +1,5 @@
 # Vinylite — Music Gallery (Django)
-
+WORK IN PROGEESS
 A simple, warm-toned music gallery app: sign up, sign in, add songs with
 streaming links, search the gallery, and build playlists.
 

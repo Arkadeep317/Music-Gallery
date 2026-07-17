@@ -65,7 +65,7 @@ def logout_view(request):
     return redirect('gallery:welcome')
 
 
-# @login_required   # TEMP: disabled for testing without auth — put this back before shipping
+@login_required 
 def home(request):
     if request.user.is_authenticated:
         playlists = Playlist.objects.filter(owner=request.user)
@@ -79,13 +79,12 @@ def home(request):
         'recent': recent,
     })
 
-# @login_required
+@login_required
 def all_playlists(request):
     playlists = Playlist.objects.filter(owner=request.user)
     return render(request, 'all_playlists.html', {'playlists': playlists})
 
-
-# @login_required
+@login_required
 def search_songs(request):
     query = request.GET.get('q', '').strip()
     results = []
@@ -95,15 +94,13 @@ def search_songs(request):
         )
     return render(request, 'search.html', {'query': query, 'results': results})
 
-
-# @login_required
+@login_required
 def play_song(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     RecentActivity.objects.update_or_create(user=request.user, song=song)
     return render(request,'play_song.html', {'song': song})
 
-
-# @login_required
+@login_required
 def add_song(request):
     if request.method == 'POST':
         form = SongForm(request.POST)
@@ -117,8 +114,7 @@ def add_song(request):
         form = SongForm()
     return render(request, 'add_song.html', {'form': form})
 
-
-# @login_required
+@login_required
 def create_playlist(request):
     skipped = []
     if request.method == 'POST':
@@ -149,14 +145,12 @@ def create_playlist(request):
         form = PlaylistForm()
     return render(request, 'create_playlist.html', {'form': form, 'skipped': skipped})
 
-
-# @login_required
+@login_required
 def playlist_detail(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
     return render(request, 'playlist_detail.html', {'playlist': playlist})
 
-
-# @login_required
+@login_required
 def edit_playlist(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
     skipped = []
@@ -181,7 +175,7 @@ def edit_playlist(request, playlist_id):
         return redirect('gallery:playlist_detail', playlist_id=playlist.id)
 
     return render(request, 'edit_playlist.html', {'playlist': playlist})
-# @login_required
+@login_required
 def delete_playlist(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
     if request.method == 'POST':
@@ -191,7 +185,7 @@ def delete_playlist(request, playlist_id):
         return redirect('gallery:home')
     return render(request, 'delete_playlist_confirm.html', {'playlist': playlist})
 
-# @login_required
+@login_required
 def delete_song(request, song_id):
     song = get_object_or_404(Song, id=song_id)
     if request.method == 'POST':
@@ -200,7 +194,7 @@ def delete_song(request, song_id):
         messages.success(request, f'"{name}" was removed from the gallery.')
         return redirect('gallery:home')
     return render(request, 'delete_song_confirm.html', {'song': song})
-# @login_required
+@login_required
 def remove_song_from_playlist(request, playlist_id, song_id):
     playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
     song = get_object_or_404(Song, id=song_id)

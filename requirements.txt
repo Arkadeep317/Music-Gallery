@@ -2,4 +2,3 @@ Django==6.0.7
 PYTHON_VERSION=3.11.6
 CSS 
 HTML
-

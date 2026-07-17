@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Delete Song — Vinylite{% endblock %}
+{% block content %}
+<div class="form-page">
+  <a href="{% url 'gallery:home' %}" class="back-link">&larr; Back to your crate</a>
+  <div class="form-card">
+    <span class="eyebrow">Are you sure?</span>
+    <h1>Delete "{{ song.name }}"?</h1>
+    <p class="poster-sub" style="margin-bottom:26px;">This removes it from the gallery and from any playlists it's in.</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary" style="width:100%;">Yes, Delete Song</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

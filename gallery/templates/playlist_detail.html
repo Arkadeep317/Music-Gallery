@@ -5,7 +5,7 @@
   <a href="{% url 'gallery:home' %}" class="back-link">&larr; Back to your crate</a>
 
   <div class="playlist-header">
-    <div class="sleeve-disc">{% include 'gallery/_vinyl.html' %}</div>
+    <div class="sleeve-disc">{% include '_vinyl.html' %}</div>
     <div>
       <span class="eyebrow">Playlist</span>
       <h1 style="margin-bottom:0;">{{ playlist.name }}</h1>
@@ -18,7 +18,10 @@
 
   <div class="section-title">
     <h2>Songs</h2>
-    <a href="{% url 'gallery:edit_playlist' playlist.id %}" class="btn btn-outline btn-small">Edit / Add Songs</a>
+    <div style="display:flex; gap:10px;">
+      <a href="{% url 'gallery:edit_playlist' playlist.id %}" class="btn btn-outline btn-small">Edit / Add Songs</a>
+      <a href="{% url 'gallery:delete_playlist' playlist.id %}" class="btn btn-outline btn-small">Delete Playlist</a>
+    </div>
   </div>
 
   {% if playlist.songs.all %}
@@ -29,7 +32,13 @@
             <span class="name">{{ song.name }}</span>
             <span class="artist">{{ song.artist }}</span>
           </div>
-          <a href="{% url 'gallery:play_song' song.id %}" class="btn btn-gold btn-small">Play</a>
+          <div style="display:flex; gap:8px;">
+            <a href="{% url 'gallery:play_song' song.id %}" class="btn btn-gold btn-small">Play</a>
+            <form action="{% url 'gallery:remove_song_from_playlist' playlist.id song.id %}" method="post" style="margin:0;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline btn-small">Remove from Playlist</button>
+            </form>
+          </div>
         </li>
       {% endfor %}
     </ul>

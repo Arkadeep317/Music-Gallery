@@ -13,13 +13,16 @@
 
   {% if results %}
     <ul class="song-list search-result-list">
-      {% for song in results %}
+     {% for song in results %}
         <li class="song-row">
           <div class="song-info">
             <span class="name">{{ song.name }}</span>
             <span class="artist">{{ song.artist }}</span>
           </div>
-          <a href="{% url 'gallery:play_song' song.id %}" class="btn btn-gold btn-small">Play</a>
+          <div style="display:flex; gap:8px;">
+            <a href="{% url 'gallery:play_song' song.id %}" class="btn btn-gold btn-small">Play</a>
+            <a href="{% url 'gallery:delete_song' song.id %}" class="btn btn-outline btn-small">Delete</a>
+          </div>
         </li>
       {% endfor %}
     </ul>

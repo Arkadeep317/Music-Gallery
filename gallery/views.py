@@ -15,13 +15,13 @@ def test(request):
 def welcome(request):
     """Landing page with Sign up / Sign in options."""
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('gallery:home')
     return render(request,'welcome.html')
 
 
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('gallery:home')
 
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -112,7 +112,7 @@ def add_song(request):
             song.added_by = request.user
             song.save()
             messages.success(request, f'"{song.name}" was added to the gallery.')
-            return redirect('home')
+            return redirect('gallery:home')
     else:
         form = SongForm()
     return render(request, 'add_song.html', {'form': form})
@@ -144,7 +144,7 @@ def create_playlist(request):
                     "Not loaded (not found in the gallery): " + ", ".join(skipped)
                 )
             messages.success(request, f'Playlist "{playlist.name}" created.')
-            return redirect('home')
+            return redirect('gallery:home')
     else:
         form = PlaylistForm()
     return render(request, 'create_playlist.html', {'form': form, 'skipped': skipped})
@@ -178,6 +178,33 @@ def edit_playlist(request, playlist_id):
                 "Not loaded (not found in the gallery): " + ", ".join(skipped)
             )
         messages.success(request, "Playlist updated.")
-        return redirect('playlist_detail', playlist_id=playlist.id)
+        return redirect('gallery:playlist_detail', playlist_id=playlist.id)
 
     return render(request, 'edit_playlist.html', {'playlist': playlist})
+# @login_required
+def delete_playlist(request, playlist_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
+    if request.method == 'POST':
+        name = playlist.name
+        playlist.delete()
+        messages.success(request, f'Playlist "{name}" deleted.')
+        return redirect('gallery:home')
+    return render(request, 'delete_playlist_confirm.html', {'playlist': playlist})
+
+# @login_required
+def delete_song(request, song_id):
+    song = get_object_or_404(Song, id=song_id)
+    if request.method == 'POST':
+        name = song.name
+        song.delete()
+        messages.success(request, f'"{name}" was removed from the gallery.')
+        return redirect('gallery:home')
+    return render(request, 'delete_song_confirm.html', {'song': song})
+# @login_required
+def remove_song_from_playlist(request, playlist_id, song_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id, owner=request.user)
+    song = get_object_or_404(Song, id=song_id)
+    if request.method == 'POST':
+        playlist.songs.remove(song)  
+        messages.success(request, f'"{song.name}" was removed from "{playlist.name}".')
+    return redirect('gallery:playlist_detail', playlist_id=playlist.id)

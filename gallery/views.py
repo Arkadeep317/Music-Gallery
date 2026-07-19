@@ -36,7 +36,7 @@ def signup(request):
             )
             user.save()
             messages.success(request, "Account created! You can now sign in.")
-            return redirect('welcome')
+            return redirect('gallery:welcome')
     else:
         form = SignUpForm()
 

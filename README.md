@@ -34,3 +34,4 @@ Then open http://127.0.0.1:8000/ in your browser.
   loop. I sent logout to the welcome (sign in / sign up) page instead,
   which is the reachable equivalent. Easy to change in
   `gallery/views.py` → `logout_view` if you want something else.
+will add photos of app

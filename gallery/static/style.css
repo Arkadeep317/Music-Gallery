@@ -1,9 +1,3 @@
-/* ============================================================
-   Vinylite — warm, vintage rock-poster styling
-   Palette: paper #EFE1C6 / paper-dark #E4D0A0 / ink #2A2019
-            oxblood #6B1E23 / mustard #D8A438 / rust #A6491F
-   Type: Oswald (display/poster), Zilla Slab (body), Space Mono (labels)
-   ============================================================ */
 
 :root{
   --paper:       #EFE1C6;
@@ -37,7 +31,6 @@ html, body{
   line-height: 1.5;
 }
 
-/* subtle paper grain / vignette, drawn purely with CSS gradients */
 .grain-overlay{
   position: fixed; inset: 0; pointer-events: none; z-index: 999;
   background:

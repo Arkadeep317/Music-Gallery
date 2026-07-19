@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ song.name }} — Vinylite{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card" style="text-align:center;">
+    <div class="sleeve-disc" style="width:110px;height:110px;margin:0 auto 22px;">{% include '_vinyl.html' %}</div>
+    <span class="eyebrow">Now Playing</span>
+    <h1 style="font-size:1.8rem;">{{ song.name }}</h1>
+    <p class="poster-sub">{{ song.artist }}</p>
+    <a href="{{ song.link }}" target="_blank" rel="noopener" class="btn btn-primary" style="width:100%;">Open Stream Link</a>
+    <p class="auth-foot"><a href="{% url 'gallery:home' %}">&larr; Back to your crate</a></p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Create Playlist — Vinylite{% endblock %}
+{% block content %}
+<div class="form-page">
+  <a href="{% url 'gallery:home' %}" class="back-link">&larr; Back to your crate</a>
+  <div class="form-card">
+    <span class="eyebrow">New sleeve</span>
+    <h1>Create a Playlist</h1>
+    <p class="poster-sub" style="margin-bottom:26px;">Name it, then list the songs to add.</p>
+
+    {% if messages %}
+      <ul class="messages">{% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="field">
+        <label for="id_name">Playlist Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+      <div class="field">
+        <label for="id_song_names">Songs</label>
+        {{ form.song_names }}
+        <p class="helptext">{{ form.song_names.help_text }}</p>
+        {{ form.song_names.errors }}
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Create Playlist</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
